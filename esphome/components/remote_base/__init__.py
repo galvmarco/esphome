@@ -1283,6 +1283,53 @@ async def samsung_action(var, config, args):
     cg.add(var.set_nbits(template_))
 
 
+# Daikinfwt
+(
+    DaikinfwtData,
+    DaikinfwtBinarySensor,
+    DaikinfwtTrigger,
+    DaikinfwtAction,
+    DaikinfwtDumper,
+) = declare_protocol("Daikinfwt")
+DAIKINFWT_SCHEMA = cv.Schema(
+    {
+        cv.Required(CONF_DATA): cv.hex_uint64_t,
+        cv.Optional(CONF_NBITS, default=64): cv.int_range(32, 64),
+    }
+)
+
+
+@register_binary_sensor("daikinfwt", DaikinfwtBinarySensor, DAIKINFWT_SCHEMA)
+def daikinfwt_binary_sensor(var, config):
+    cg.add(
+        var.set_data(
+            cg.StructInitializer(
+                DaikinfwtData,
+                ("data", config[CONF_DATA]),
+                ("nbits", config[CONF_NBITS]),
+            )
+        )
+    )
+
+
+@register_trigger("daikinfwt", DaikinfwtTrigger, DaikinfwtData)
+def daikinfwt_trigger(var, config):
+    pass
+
+
+@register_dumper("daikinfwt", DaikinfwtDumper)
+def daikinfwt_dumper(var, config):
+    pass
+
+
+@register_action("daikinfwt", DaikinfwtAction, DAIKINFWT_SCHEMA)
+async def daikinfwt_action(var, config, args):
+    template_ = await cg.templatable(config[CONF_DATA], args, cg.uint64)
+    cg.add(var.set_data(template_))
+    template_ = await cg.templatable(config[CONF_NBITS], args, cg.uint8)
+    cg.add(var.set_nbits(template_))
+
+
 # Samsung36
 (
     Samsung36Data,
