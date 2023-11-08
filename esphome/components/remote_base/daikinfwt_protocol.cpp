@@ -12,8 +12,8 @@ static const uint32_t HEADER_LOW_US = 9900;
 static const uint32_t HEADER2_HIGH_US = 4600;
 static const uint32_t HEADER2_LOW_US = 2600;
 static const uint32_t BIT_HIGH_US = 330;
-static const uint32_t BIT_ONE_LOW_US = 400;
-static const uint32_t BIT_ZERO_LOW_US = 980;
+static const uint32_t BIT_ZERO_LOW_US = 400;
+static const uint32_t BIT_ONE_LOW_US = 980;
 static const uint32_t FOOTER_HIGH_US = 330;
 static const uint32_t FOOTER_LOW_US = 330;
 
@@ -50,9 +50,9 @@ optional<DaikinfwtData> DaikinfwtProtocol::decode(RemoteReceiveData src) {
 
   for (out.nbits = 0; out.nbits < 64; out.nbits++) {
     if (src.expect_item(BIT_HIGH_US, BIT_ONE_LOW_US)) {
-      out.data = (out.data << 1) | 1;
+      out.data = (out.data >> 1) | 0x8000000000000000u;
     } else if (src.expect_item(BIT_HIGH_US, BIT_ZERO_LOW_US)) {
-      out.data = (out.data << 1) | 0;
+      out.data = (out.data >> 1) | 0;
     } else {
       return {};
     }
