@@ -9,8 +9,9 @@ namespace remote_base {
 struct DaikinfwtData {
   uint64_t data;
   uint8_t nbits;
+  uint8_t checksum;
 
-  bool operator==(const DaikinfwtData &rhs) const { return data == rhs.data && nbits == rhs.nbits; }
+  bool operator==(const DaikinfwtData &rhs) const { return data == rhs.data && nbits == rhs.nbits && checksum == rhs.checksum; }
 };
 
 class DaikinfwtProtocol : public RemoteProtocol<DaikinfwtData> {
@@ -18,6 +19,7 @@ class DaikinfwtProtocol : public RemoteProtocol<DaikinfwtData> {
   void encode(RemoteTransmitData *dst, const DaikinfwtData &data) override;
   optional<DaikinfwtData> decode(RemoteReceiveData src) override;
   void dump(const DaikinfwtData &data) override;
+  static uint8_t computeDaikinFWTChecksum(uint64_t data);
 };
 
 DECLARE_REMOTE_PROTOCOL(Daikinfwt)

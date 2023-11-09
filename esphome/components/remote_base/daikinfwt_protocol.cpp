@@ -58,12 +58,25 @@ optional<DaikinfwtData> DaikinfwtProtocol::decode(RemoteReceiveData src) {
     }
   }
 
+  out.checksum = computeDaikinFWTChecksum(out.data);
+
   if (!src.expect_mark(FOOTER_HIGH_US))
     return {};
   return out;
 }
 void DaikinfwtProtocol::dump(const DaikinfwtData &data) {
-  ESP_LOGI(TAG, "Received Daikinfwt: data=0x%" PRIX64 ", nbits=%d", data.data, data.nbits);
+  ESP_LOGI(TAG, "Received Daikinfwt: data=0x%" PRIX64 ", nbits=%d, checksum=%d", data.data, data.nbits, data.checksum);
+}
+
+uint8_t DaikinfwtProtocol::computeDaikinFWTChecksum(uint64_t data) {
+  uint8_t result = 0;
+  for(int i=0; i<15; i++)
+  {
+    result += data & 0x0F;
+    data = data >> 4;
+  }
+
+  result = result % 16u;
 }
 
 }  // namespace remote_base
