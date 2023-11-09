@@ -65,7 +65,7 @@ optional<DaikinfwtData> DaikinfwtProtocol::decode(RemoteReceiveData src) {
   return out;
 }
 void DaikinfwtProtocol::dump(const DaikinfwtData &data) {
-  ESP_LOGI(TAG, "Received Daikinfwt: data=0x%" PRIX64 ", nbits=%d, checksum=%d", data.data, data.nbits, data.checksum);
+  ESP_LOGI(TAG, "Received Daikinfwt: data=0x%" PRIX64 ", nbits=%d, checksum=0x%" PRIX8 "", data.data, data.nbits, data.checksum);
 }
 
 uint8_t DaikinfwtProtocol::computeDaikinFWTChecksum(uint64_t data) {
