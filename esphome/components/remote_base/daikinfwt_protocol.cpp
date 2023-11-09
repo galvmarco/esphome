@@ -27,8 +27,8 @@ void DaikinfwtProtocol::encode(RemoteTransmitData *dst, const DaikinfwtData &dat
   dst->item(HEADER2_HIGH_US, HEADER2_LOW_US);
 
 
-  for (uint8_t bit = data.nbits; bit > 0; bit--) {
-    if ((data.data >> (bit - 1)) & 1) {
+  for (uint8_t bit = 0; bit < data.nbits; bit++) {
+    if ((data.data >> bit ) & 1) {
       dst->item(BIT_HIGH_US, BIT_ONE_LOW_US);
     } else {
       dst->item(BIT_HIGH_US, BIT_ZERO_LOW_US);
