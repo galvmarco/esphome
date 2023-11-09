@@ -77,6 +77,8 @@ uint8_t DaikinfwtProtocol::computeDaikinFWTChecksum(uint64_t data) {
   }
 
   result = result % 16u;
+
+  return result;
 }
 
 }  // namespace remote_base
