@@ -168,6 +168,7 @@ bool DaikinFwtClimate::parse_state_frame_(const uint8_t frame[]) {
   checksum_computed = this->computeDaikinFWTChecksum_(frame);
 
   if( checksum_computed != checksum_received) {
+    ESP_LOGE(TAG, "Bad CRC on received data");
     return false;
   }
 
@@ -236,6 +237,8 @@ bool DaikinFwtClimate::parse_state_frame_(const uint8_t frame[]) {
   if( sleep ) {
     this->preset = climate::CLIMATE_PRESET_SLEEP;
   }
+
+  ESP_LOGI(TAG, "State decoded: mode=0x%" PRIX8 ", temperature=%d, fanmode=%d, preset=%d", this->mode, this->target_temperature, this->fan_mode, this->preset);
   
   this->publish_state();
   return true;
