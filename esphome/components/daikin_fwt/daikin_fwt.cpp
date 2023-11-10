@@ -168,7 +168,7 @@ bool DaikinFwtClimate::parse_state_frame_(const uint8_t frame[]) {
   checksum_computed = this->computeDaikinFWTChecksum_(frame);
 
   if( checksum_computed != checksum_received) {
-    ESP_LOGE(TAG, "Bad CRC on received data, computed=0x%" PRIX8 "received=0x%" PRIX8 "", checksum_computed, checksum_received);
+    ESP_LOGE(TAG, "Bad CRC on received data, computed=0x%" PRIX8 " received=0x%" PRIX8 "", checksum_computed, checksum_received);
     return false;
   }
 
@@ -270,7 +270,7 @@ bool DaikinFwtClimate::on_receive(remote_base::RemoteReceiveData data) {
 
   for(int pos=0; pos<DAIKINFWT_STATE_FRAME_SIZE; pos++) {
     state_frame[pos] = (state_data >> pos*8) & 0xFFu;
-    ESP_LOGI(TAG, "data[%d]=0x%" PRIX64 "", pos, state_frame[pos]);
+    ESP_LOGI(TAG, "data[%d]=0x%" PRIX8 "", pos, state_frame[pos]);
   }
   return this->parse_state_frame_(state_frame);
 }
