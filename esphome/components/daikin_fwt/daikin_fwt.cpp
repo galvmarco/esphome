@@ -158,7 +158,7 @@ bool DaikinFwtClimate::parse_state_frame_(const uint8_t frame[]) {
   uint8_t swing_mode = frame[0] & DAIKINFWT_SWING_VERTICAL;
   uint8_t sleep = frame[0] & DAIKINFWT_SLEEP;
   
-  uint8_t temperature = ((frame[1] & 0xF0) >> 4)*10 + (frame[1] 0x0F);
+  uint8_t temperature = ((frame[1] & 0xF0) >> 4)*10 + (frame[1] & 0x0F);
 
   uint8_t fan_mode = frame[6] & 0xF0;
 
