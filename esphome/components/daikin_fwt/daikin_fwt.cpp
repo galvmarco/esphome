@@ -1,5 +1,6 @@
 #include "daikin_fwt.h"
 #include "esphome/components/remote_base/remote_base.h"
+#include <cinttypes>
 
 namespace esphome {
 namespace daikin_fwt {
@@ -262,7 +263,7 @@ bool DaikinFwtClimate::on_receive(remote_base::RemoteReceiveData data) {
     }
   }
 
-  ESP_LOGI(TAG, "Received on Climate IR Daikinfwt: data=0x%" PRIX64 "", data.data);
+  ESP_LOGI(TAG, "Received on Climate IR Daikinfwt: data=0x%" PRIX64 "", state_data);
 
   for(int pos=0; pos<DAIKINFWT_STATE_FRAME_SIZE; pos++) {
     state_frame[pos] = (state_data >> pos*8) & 0xFFu;
