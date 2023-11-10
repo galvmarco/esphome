@@ -242,7 +242,7 @@ bool DaikinFwtClimate::parse_state_frame_(const uint8_t frame[]) {
 
 bool DaikinFwtClimate::on_receive(remote_base::RemoteReceiveData data) {
   uint8_t state_frame[DAIKINFWT_STATE_FRAME_SIZE] = {};
-  uint64_t state_data;
+  uint64_t state_data = 0;
   uint8_t nbits;
 
   if (!data.expect_item(DAIKINFWT_HEADER_MARK_US, DAIKINFWT_HEADER_SPACE_US))
@@ -261,6 +261,8 @@ bool DaikinFwtClimate::on_receive(remote_base::RemoteReceiveData data) {
       return false;
     }
   }
+
+  ESP_LOGI(TAG, "Received on Climate IR Daikinfwt: data=0x%" PRIX64 "", data.data);
 
   for(int pos=0; pos<DAIKINFWT_STATE_FRAME_SIZE; pos++) {
     state_frame[pos] = (state_data >> pos*8) & 0xFFu;
