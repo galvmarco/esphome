@@ -56,7 +56,7 @@ void DaikinFwtClimate::transmit_state() {
 
 uint8_t DaikinFwtClimate::swing_() {
   uint8_t swing = 0;
-  switch (this->swing_mode.value()) {
+  switch (this->swing_mode) {
     case climate::CLIMATE_SWING_OFF:
       swing = DAIKINFWT_SWING_OFF;
       break;
@@ -83,7 +83,7 @@ uint8_t DaikinFwtClimate::sleep_() {
 
 uint8_t DaikinFwtClimate::operation_mode_() {
   uint8_t operating_mode = 0;
-  switch (this->mode.value()) {
+  switch (this->mode) {
     case climate::CLIMATE_MODE_COOL:
       operating_mode |= DAIKINFWT_MODE_COOL;
       break;
@@ -152,19 +152,19 @@ uint8_t DaikinFwtClimate::temperature_() {
 bool DaikinFwtClimate::parse_state_frame_(const uint8_t frame[]) {
   uint8_t checksum_computed;
   
-  uint8_t checksum_received = ((state_frame[0] & 0xF0) >> 4);
+  uint8_t checksum_received = ((frame[0] & 0xF0) >> 4);
 
   uint8_t btn_pwr = frame[0] & DAIKINFWT_BTN_PWR;
   uint8_t swing_mode = frame[0] & DAIKINFWT_SWING_VERTICAL;
   uint8_t sleep = frame[0] & DAIKINFWT_SLEEP;
   
-  uint8_t temperature = ((frame[1] 0xF0) >> 4)*10 + (frame[1] 0x0F);
+  uint8_t temperature = ((frame[1] & 0xF0) >> 4)*10 + (frame[1] 0x0F);
 
   uint8_t fan_mode = frame[6] & 0xF0;
 
   uint8_t mode = frame[6] & 0x0F;
 
-  checksum_computed = computeDaikinFWTChecksum(frame);
+  checksum_computed = this->computeDaikinFWTChecksum_(frame);
 
   if( checksum_computed != checksum_received) {
     return false;
