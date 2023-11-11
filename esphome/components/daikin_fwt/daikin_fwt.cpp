@@ -172,23 +172,39 @@ bool DaikinFwtClimate::parse_state_frame_(const uint8_t frame[]) {
     return false;
   }
 
-  if (btn_pwr && this->mode == climate::CLIMATE_MODE_OFF) {
-    switch (mode) {
-      case DAIKINFWT_MODE_COOL:
-        this->mode = climate::CLIMATE_MODE_COOL;
-        break;
-      case DAIKINFWT_MODE_DRY:
-        this->mode = climate::CLIMATE_MODE_DRY;
-        break;
-      case DAIKINFWT_MODE_HEAT:
-        this->mode = climate::CLIMATE_MODE_HEAT;
-        break;
-      case DAIKINFWT_MODE_FAN:
-        this->mode = climate::CLIMATE_MODE_FAN_ONLY;
-        break;
-    }
-  } else {
-    this->mode = climate::CLIMATE_MODE_OFF;
+  // if (btn_pwr && this->mode == climate::CLIMATE_MODE_OFF) {
+  //   switch (mode) {
+  //     case DAIKINFWT_MODE_COOL:
+  //       this->mode = climate::CLIMATE_MODE_COOL;
+  //       break;
+  //     case DAIKINFWT_MODE_DRY:
+  //       this->mode = climate::CLIMATE_MODE_DRY;
+  //       break;
+  //     case DAIKINFWT_MODE_HEAT:
+  //       this->mode = climate::CLIMATE_MODE_HEAT;
+  //       break;
+  //     case DAIKINFWT_MODE_FAN:
+  //       this->mode = climate::CLIMATE_MODE_FAN_ONLY;
+  //       break;
+  //   }
+  // } else {
+  //   this->mode = climate::CLIMATE_MODE_OFF;
+  // }
+
+
+  switch (mode) {
+    case DAIKINFWT_MODE_COOL:
+      this->mode = climate::CLIMATE_MODE_COOL;
+      break;
+    case DAIKINFWT_MODE_DRY:
+      this->mode = climate::CLIMATE_MODE_DRY;
+      break;
+    case DAIKINFWT_MODE_HEAT:
+      this->mode = climate::CLIMATE_MODE_HEAT;
+      break;
+    case DAIKINFWT_MODE_FAN:
+      this->mode = climate::CLIMATE_MODE_FAN_ONLY;
+      break;
   }
 
   if(temperature < DAIKINFWT_TEMP_MIN) {
