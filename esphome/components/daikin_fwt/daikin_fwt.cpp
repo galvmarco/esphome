@@ -269,7 +269,7 @@ bool DaikinFwtClimate::on_receive(remote_base::RemoteReceiveData data) {
   ESP_LOGI(TAG, "Received on Climate IR Daikinfwt: data=0x%" PRIX64 "", state_data);
 
   for(int pos=0; pos<DAIKINFWT_STATE_FRAME_SIZE; pos++) {
-    state_frame[pos] = (state_data >> pos*8) & 0xFFu;
+    state_frame[pos] = (state_data >> ((DAIKINFWT_STATE_FRAME_SIZE-1-pos)*8)) & 0xFFu;
     ESP_LOGI(TAG, "data[%d]=0x%" PRIX8 "", pos, state_frame[pos]);
   }
   return this->parse_state_frame_(state_frame);
