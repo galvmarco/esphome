@@ -165,6 +165,8 @@ bool DaikinFwtClimate::parse_state_frame_(const uint8_t frame[]) {
 
   uint8_t mode = frame[6] & 0x0F;
 
+  auto decodedMode = climate::CLIMATE_MODE_COOL;
+
   checksum_computed = this->computeDaikinFWTChecksum_(frame);
 
   if( checksum_computed != checksum_received) {
@@ -172,40 +174,34 @@ bool DaikinFwtClimate::parse_state_frame_(const uint8_t frame[]) {
     return false;
   }
 
-  if (btn_pwr && this->mode == climate::CLIMATE_MODE_OFF) {
-    switch (mode) {
-      case DAIKINFWT_MODE_COOL:
-        this->mode = climate::CLIMATE_MODE_COOL;
-        break;
-      case DAIKINFWT_MODE_DRY:
-        this->mode = climate::CLIMATE_MODE_DRY;
-        break;
-      case DAIKINFWT_MODE_HEAT:
-        this->mode = climate::CLIMATE_MODE_HEAT;
-        break;
-      case DAIKINFWT_MODE_FAN:
-        this->mode = climate::CLIMATE_MODE_FAN_ONLY;
-        break;
-    }
-  } else {
-    this->mode = climate::CLIMATE_MODE_OFF;
+  switch (mode) {
+    case DAIKINFWT_MODE_COOL:
+      decodedMode = climate::CLIMATE_MODE_COOL;
+      break;
+    case DAIKINFWT_MODE_DRY:
+      decodedMode = climate::CLIMATE_MODE_DRY;
+      break;
+    case DAIKINFWT_MODE_HEAT:
+      decodedMode = climate::CLIMATE_MODE_HEAT;
+      break;
+    case DAIKINFWT_MODE_FAN:
+      decodedMode = climate::CLIMATE_MODE_FAN_ONLY;
+      break;
   }
 
-
-  // switch (mode) {
-  //   case DAIKINFWT_MODE_COOL:
-  //     this->mode = climate::CLIMATE_MODE_COOL;
-  //     break;
-  //   case DAIKINFWT_MODE_DRY:
-  //     this->mode = climate::CLIMATE_MODE_DRY;
-  //     break;
-  //   case DAIKINFWT_MODE_HEAT:
-  //     this->mode = climate::CLIMATE_MODE_HEAT;
-  //     break;
-  //   case DAIKINFWT_MODE_FAN:
-  //     this->mode = climate::CLIMATE_MODE_FAN_ONLY;
-  //     break;
-  // }
+  if (btn_pwr) {
+    if(this->mode == climate::CLIMATE_MODE_OFF) {
+      this->mode = decodedMode;
+    }
+    else {
+      this->mode = climate::CLIMATE_MODE_OFF;
+    }
+  } else {
+    if(this->mode != climate::CLIMATE_MODE_OFF) {
+      this->mode = decodedMode;
+    }
+    
+  }
 
   if(temperature < DAIKINFWT_TEMP_MIN) {
     temperature = DAIKINFWT_TEMP_MIN;
