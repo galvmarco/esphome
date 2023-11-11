@@ -238,7 +238,7 @@ bool DaikinFwtClimate::parse_state_frame_(const uint8_t frame[]) {
     this->preset = climate::CLIMATE_PRESET_SLEEP;
   }
 
-  ESP_LOGI(TAG, "State decoded: mode=0x%" PRIX8 ", temperature=%d, fanmode=%d, preset=%d", this->mode, this->target_temperature, this->fan_mode, this->preset);
+  ESP_LOGI(TAG, "State decoded: mode=0x%" PRIX8 ", temperature=%f, fanmode=%d, preset=%d", this->mode, this->target_temperature, this->fan_mode, this->preset);
   
   this->publish_state();
   return true;
