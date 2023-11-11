@@ -14,10 +14,10 @@ const uint8_t DAIKINFWT_TEMP_MAX = 30;  // Celsius
 const uint8_t DAIKINFWT_BTN_PWR = 0x08;
 
 // Modes
-const uint8_t DAIKINFWT_MODE_DRY = 0x10;
-const uint8_t DAIKINFWT_MODE_COOL = 0x20;
-const uint8_t DAIKINFWT_MODE_FAN = 0x40;
-const uint8_t DAIKINFWT_MODE_HEAT = 0x80;
+const uint8_t DAIKINFWT_MODE_DRY = 0x1;
+const uint8_t DAIKINFWT_MODE_COOL = 0x2;
+const uint8_t DAIKINFWT_MODE_FAN = 0x4;
+const uint8_t DAIKINFWT_MODE_HEAT = 0x8;
 
 // Fan Speed
 const uint8_t DAIKINFWT_FAN_AUTO = 0x10;
